@@ -12,11 +12,25 @@ import topLevelAwait from "vite-plugin-top-level-await";
 export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
-      plugins: [fixReactVirtualized]
+      plugins: [fixReactVirtualized],
+      target: 'esnext',
     },
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'antd-mobile',
+      'i18next',
+      'react-i18next',
+    ],
   },
   plugins: [
-    react(),
+    react({
+      // Enable Fast Refresh
+      fastRefresh: true,
+      // Use automatic JSX runtime
+      jsxRuntime: 'automatic',
+    }),
     // VitePWA({
     //   mode: 'development',
     //   strategies: 'injectManifest',
@@ -56,9 +70,27 @@ export default defineConfig({
     // splitVendorChunkPlugin()
   ],
   build: {
-    minify: true,
-    cssMinify: true,
+    minify: 'terser',
+    cssMinify: 'lightningcss',
     cssCodeSplit: true,
+    target: 'esnext',
+    modulePreload: {
+      polyfill: false,
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
     rollupOptions: {
       input: {
         popup: resolve(__dirname, "index.html"),
@@ -68,11 +100,63 @@ export default defineConfig({
         content_script: resolve(__dirname, "src/content-script.ts"),
       },
       output: {
-        chunkFileNames: "[name].[hash].js",
-        assetFileNames: "[name].[hash].[ext]",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
         entryFileNames: "[name].js",
         dir: "dist",
+        // Manual chunks for better code splitting
+        manualChunks: (id) => {
+          // Vendor chunks
+          if (id.includes('node_modules')) {
+            // React ecosystem
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            // Antd Mobile UI
+            if (id.includes('antd-mobile') || id.includes('antd-mobile-icons')) {
+              return 'vendor-ui';
+            }
+            // i18n
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'vendor-i18n';
+            }
+            // Crypto & blockchain
+            if (id.includes('nano') || id.includes('bip39') || id.includes('argon2') || id.includes('crypto')) {
+              return 'vendor-crypto';
+            }
+            // Capacitor plugins
+            if (id.includes('@capacitor')) {
+              return 'vendor-capacitor';
+            }
+            // Firebase
+            if (id.includes('firebase')) {
+              return 'vendor-firebase';
+            }
+            // Other vendors
+            return 'vendor-misc';
+          }
+        },
+        // Optimize chunk size
+        experimentalMinChunkSize: 10000,
+      },
+      treeshake: {
+        moduleSideEffects: 'no-external',
+        preset: 'recommended',
+        propertyReadSideEffects: false,
       },
     },
+    // Chunk size warnings
+    chunkSizeWarningLimit: 1000,
+    reportCompressedSize: false, // Faster builds
+    sourcemap: false, // No sourcemaps in production
+  },
+  // Performance optimizations
+  esbuild: {
+    drop: ['console', 'debugger'],
+    legalComments: 'none',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    treeShaking: true,
   },
 });

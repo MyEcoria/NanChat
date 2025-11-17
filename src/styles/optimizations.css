@@ -1,0 +1,279 @@
+/**
+ * CSS Performance Optimizations
+ * This file contains CSS optimizations to improve rendering performance
+ */
+
+/* ========================================
+   HARDWARE ACCELERATION
+   ======================================== */
+
+/* Force GPU acceleration for frequently animated elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: auto;
+}
+
+/* Optimize transforms for smooth animations */
+.smooth-transform {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* ========================================
+   CRITICAL CSS OPTIMIZATIONS
+   ======================================== */
+
+/* Contain paint and layout for better performance */
+.contain-paint {
+  contain: paint;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+.contain-content {
+  contain: content;
+}
+
+/* ========================================
+   FONT LOADING OPTIMIZATION
+   ======================================== */
+
+/* Font display swap for faster text rendering */
+@font-face {
+  font-display: swap;
+}
+
+/* Reduce font weight variations for smaller bundle */
+* {
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ========================================
+   IMAGE OPTIMIZATION
+   ======================================== */
+
+img,
+picture,
+video {
+  /* Prevent layout shift */
+  height: auto;
+  max-width: 100%;
+
+  /* Hardware acceleration */
+  transform: translateZ(0);
+
+  /* Faster image decoding */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Lazy loaded images */
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* ========================================
+   SCROLL PERFORMANCE
+   ======================================== */
+
+/* Optimize scrolling elements */
+.scroll-container {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* Reduce paint on scroll */
+.scroll-optimized {
+  will-change: scroll-position;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ========================================
+   CONTENT VISIBILITY
+   ======================================== */
+
+/* Auto content-visibility for off-screen content */
+.lazy-content {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* ========================================
+   TRANSITION OPTIMIZATIONS
+   ======================================== */
+
+/* Only animate transform and opacity for best performance */
+.perf-transition {
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduce motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   LAYOUT OPTIMIZATION
+   ======================================== */
+
+/* Prevent layout thrashing */
+.no-layout-shift {
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Grid optimization */
+.grid-optimized {
+  display: grid;
+  grid-template-rows: masonry;
+  contain: layout style;
+}
+
+/* ========================================
+   MEMORY OPTIMIZATION
+   ======================================== */
+
+/* Remove elements from render tree when hidden */
+.hidden-optimized {
+  content-visibility: hidden;
+}
+
+/* Optimize long lists */
+.virtual-list-item {
+  contain: strict;
+  content-visibility: auto;
+}
+
+/* ========================================
+   TOUCH OPTIMIZATION
+   ======================================== */
+
+/* Prevent 300ms tap delay on mobile */
+a,
+button,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Optimize touch scrolling */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* ========================================
+   RENDERING HINTS
+   ======================================== */
+
+/* Rendering hints for better performance */
+.render-optimized {
+  color-scheme: light dark;
+  forced-color-adjust: auto;
+}
+
+/* Compositing hints */
+.composite-layer {
+  isolation: isolate;
+  z-index: 0;
+}
+
+/* ========================================
+   CSS CONTAINMENT
+   ======================================== */
+
+/* Apply containment to improve rendering performance */
+.adm-list-item,
+.chat-message,
+.message-container {
+  contain: layout style paint;
+}
+
+/* ========================================
+   CUSTOM PROPERTIES OPTIMIZATION
+   ======================================== */
+
+/* Use custom properties for dynamic theming without repaints */
+:root {
+  /* Color palette - cached for performance */
+  --cached-primary: var(--adm-color-primary);
+  --cached-background: var(--main-background-color);
+  --cached-text: var(--text-color-primary);
+}
+
+/* ========================================
+   PRINT OPTIMIZATION
+   ======================================== */
+
+@media print {
+  /* Hide unnecessary elements when printing */
+  .no-print,
+  nav,
+  footer,
+  .adm-nav-bar,
+  .bottom-nav {
+    display: none !important;
+  }
+
+  /* Optimize colors for print */
+  * {
+    color: black !important;
+    background: white !important;
+  }
+}
+
+/* ========================================
+   DARK MODE OPTIMIZATION
+   ======================================== */
+
+/* Reduce repaints when switching themes */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
+}
+
+/* ========================================
+   NETWORK OPTIMIZATION
+   ======================================== */
+
+/* Optimize for slow connections */
+@media (prefers-reduced-data: reduce) {
+  /* Disable background images */
+  * {
+    background-image: none !important;
+  }
+
+  /* Use system fonts */
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}

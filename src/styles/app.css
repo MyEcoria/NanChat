@@ -2,7 +2,7 @@
   z-index: 1;
   /* background-color: rgb(16, 16, 24); */
   /* background-color: var(--main-background-color); */
-  
+
   padding: 10px 16px;
   display: flex;
   flex-shrink: 0;
@@ -11,13 +11,16 @@
   align-items: center;
   -webkit-box-pack: justify;
   justify-content: space-between;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(0, 0, 0, 0.3);
   /* border-bottom: 1px solid rgb(50, 50, 50, 0.5); */
   height: 46px;
   width: 100%;
   position: sticky;
   top: 0;
-  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
 }
 .adm-nav-bar {
   background-color: var(--adm-color-background);
@@ -176,51 +179,69 @@ html {
 }
 
 .slide-in-l {
-  animation: slide-in-l 0.5s forwards;
-  -webkit-animation: slide-in-l 0.5s forwards;
+  animation: slide-in-l 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  -webkit-animation: slide-in-l 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
 }
 
 .slide-out-l {
-  animation: slide-out-l 0.5s forwards;
-  -webkit-animation: slide-out-l 0.5s forwards;
+  animation: slide-out-l 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  -webkit-animation: slide-out-l 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
 }
 
 @keyframes slide-in-l {
+  0% {
+    transform: translateY(100%) translateZ(0);
+    opacity: 0;
+  }
   100% {
-    transform: translateY(0%);
+    transform: translateY(0%) translateZ(0);
+    opacity: 1;
   }
 }
 
 @-webkit-keyframes slide-in-l {
+  0% {
+    -webkit-transform: translateY(100%) translateZ(0);
+    opacity: 0;
+  }
   100% {
-    -webkit-transform: translateY(0%);
+    -webkit-transform: translateY(0%) translateZ(0);
+    opacity: 1;
   }
 }
 
 @keyframes slide-out-l {
   0% {
-    transform: translateY(0%);
+    transform: translateY(0%) translateZ(0);
+    opacity: 1;
   }
-
   100% {
-    transform: translateY(100%);
+    transform: translateY(100%) translateZ(0);
+    opacity: 0;
   }
 }
+
 @keyframes slide-in {
   0% {
-    transform: translateX(100%);
+    transform: translateX(100%) translateZ(0);
+    opacity: 0.8;
   }
   100% {
-    transform: translateX(0%);
+    transform: translateX(0%) translateZ(0);
+    opacity: 1;
   }
 }
+
 @-webkit-keyframes slide-out-l {
   0% {
-    -webkit-transform: translateY(0%);
+    -webkit-transform: translateY(0%) translateZ(0);
+    opacity: 1;
   }
-
   100% {
-    -webkit-transform: translateY(100%);
+    -webkit-transform: translateY(100%) translateZ(0);
+    opacity: 0;
   }
 }
 
@@ -342,31 +363,79 @@ html {
 
 
 .fade-in {
-	animation: fadeIn 0.3s;
+	animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
+  will-change: opacity, transform;
 }
 
 @keyframes fadeIn {
   from {
   	opacity: 0;
+    transform: translateY(10px) translateZ(0);
   }
   to {
  	opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* Modern scale-in animation */
+.scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+/* Smooth bounce animation */
+.bounce-in {
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  will-change: transform, opacity;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateZ(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateZ(0);
+  }
+  70% {
+    transform: scale(0.98) translateZ(0);
+  }
+  100% {
+    transform: scale(1) translateZ(0);
   }
 }
 
 .animated-button {
   background-color: #1677ff;
-  transition: background-color 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 }
 
 .animated-button:hover {
   background-color: #2563eb;
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 0 10px 25px -5px rgba(22, 119, 255, 0.3);
 }
 
 .animated-button:active {
   background-color: #00b578;
-  transition: background-color 0.1s ease-in-out;
+  transform: translateY(0) scale(0.98) translateZ(0);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 textarea::placeholder, input::placeholder {
   color: var(--adm-color-text-secondary) !important;
@@ -419,6 +488,19 @@ textarea::placeholder, input::placeholder {
   --gold-color: rgb(192 164 119);
 }
 
+.myecoria-theme {
+  --adm-color-primary: #6366f1;
+  --adm-color-background: #1a1a2e;
+  --main-background-color: #0f0f23;
+  --text-color-primary: #e8e8f0;
+  --adm-color-border: #2d2d44;
+  --adm-border-color: #2d2d44;
+  --gold-color: #f59e0b;
+  --myecoria-accent: #8b5cf6;
+  --myecoria-gradient-start: #6366f1;
+  --myecoria-gradient-end: #8b5cf6;
+}
+
 /*  animation keyboard ios native */
 :root:not(.no-animation) .ios .app:not(:has(.chat-list)){
     padding-bottom: 0;
@@ -437,14 +519,17 @@ textarea::placeholder, input::placeholder {
 }
 
 .swap-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) translateZ(0);
+  transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 .swap-btn:active {
-  transform: scale(1.2);
+  transform: scale(1.2) translateZ(0);
 }
 .swap-btn {
   /* color: var(--adm-color-primary); */
-  
+  transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateZ(0);
+
 }
 body.light-theme .message.justify-end {
   color: var(--adm-color-background); 
@@ -465,23 +550,51 @@ body.banano-theme .adm-button:hover {
   /* make the text color white on light theme for better contrast on hover */
   color: var(--main-background-color);
 }
+body.myecoria-theme .message.justify-end {
+  color: var(--adm-color-background);
+}
+body.myecoria-theme .adm-button-primary {
+  background: linear-gradient(135deg, var(--myecoria-gradient-start), var(--myecoria-gradient-end));
+  border: none;
+  color: white;
+}
+body.myecoria-theme .adm-button-primary:hover {
+  box-shadow: 0 0 20px 0 var(--adm-color-primary);
+  transform: translateY(-1px);
+}
+body.myecoria-theme .adm-button-fill-none {
+  color: var(--adm-color-primary) !important;
+}
 @media (hover: hover){
 .adm-list-item:hover:not(.form-list) {
-  background-color: var(--active-background-color	);
+  background-color: var(--active-background-color);
+  transform: translateX(2px) translateZ(0);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.adm-list-item {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .adm-button:hover:not(.adm-button-danger):not(.adm-button-primary):not(.adm-button-success):not(.form-list) {
   background-color: var(--adm-color-primary);
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   /* color: var(--adm-color-background); */
+}
+.adm-button {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
 }
 body.light-theme .adm-button:hover:not(.adm-button-danger):not(.adm-button-primary):not(.adm-button-success):not(.form-list) {
   /* make the text color white on light theme for better contrast on hover */
   color: var(--adm-color-background);
 }
 .adm-button-primary:hover {
-  box-shadow: 0 0 10px 0 var(--adm-color-primary);
+  box-shadow: 0 8px 20px -4px var(--adm-color-primary);
+  transform: translateY(-2px) translateZ(0);
 }
 .adm-button-danger:hover {
-  box-shadow: 0 0 10px 0 var(--adm-color-danger);
+  box-shadow: 0 8px 20px -4px var(--adm-color-danger);
+  transform: translateY(-2px) translateZ(0);
 }
 
 .adm-button:not(.adm-button-default).adm-button-fill-none {
@@ -533,23 +646,25 @@ body.light-theme .adm-button:hover:not(.adm-button-danger):not(.adm-button-prima
   }
 
   
-/* here we customize the transition, these are the shared styles for the old and new view*/      
+/* here we customize the transition, these are the shared styles for the old and new view*/
 ::view-transition-new(root),
 ::view-transition-old(root) {
-  animation-duration: 200ms;
-  /* animation-timing-function: ease-in-out; */
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   animation-direction: normal;
 }
 
 /* old view slides out to the left */
 ::view-transition-old(root) {
   animation-name: slide-out;
+  opacity: 1;
 }
 
 /* new view slides in from the right */
 ::view-transition-new(root) {
   animation-name: slide-in;
   mix-blend-mode: normal;
+  opacity: 1;
 }
 }
 
@@ -576,37 +691,45 @@ body.light-theme .adm-button:hover:not(.adm-button-danger):not(.adm-button-prima
 
 @keyframes slide-out {
   from {
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
+    opacity: 1;
   }
   to {
-    transform: translateX(-20%);
+    transform: translateX(-20%) translateZ(0);
+    opacity: 0.7;
   }
 }
 
 @keyframes slide-out-reverse {
   from {
-    transform: translateX(-20%);
+    transform: translateX(-20%) translateZ(0);
+    opacity: 0.7;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
+    opacity: 1;
   }
 }
 
 @keyframes slide-in {
   from {
-    transform: translateX(100%);
+    transform: translateX(100%) translateZ(0);
+    opacity: 0.8;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
+    opacity: 1;
   }
 }
 
 @keyframes slide-in-reverse {
   from {
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
+    opacity: 1;
   }
   to {
-    transform: translateX(100%);
+    transform: translateX(100%) translateZ(0);
+    opacity: 0.8;
   }
 }      
       
@@ -921,4 +1044,185 @@ input[type=number]::-webkit-outer-spin-button {
   right: 0;
   border-top: solid 1px var(--adm-border-color);
   /* This won't push other content */
+}
+
+/* ========================================
+   MODERN UI ENHANCEMENTS
+   ======================================== */
+
+/* Glassmorphism effect for cards */
+.glass-card {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  border-radius: 12px;
+}
+
+/* Modern card with shadow */
+.modern-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+}
+
+.modern-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px) translateZ(0);
+}
+
+/* Smooth gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--adm-color-primary) 0%, var(--myecoria-accent, #8b5cf6) 100%);
+}
+
+/* MyEcoria specific enhancements */
+body.myecoria-theme .modern-card {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+body.myecoria-theme .glass-card {
+  background-color: rgba(15, 15, 35, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* Enhanced focus states */
+input:focus,
+textarea:focus,
+.adm-input-element:focus {
+  outline: 2px solid var(--adm-color-primary);
+  outline-offset: 2px;
+  transition: outline 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth icon transitions */
+.antd-mobile-icon,
+svg {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+}
+
+/* Performance optimization - GPU acceleration for animations */
+.fade-in,
+.fade-out,
+.slide-in,
+.slide-out,
+.scale-in,
+.bounce-in {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Improved ripple effect */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Modern scroll behavior */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced backdrop blur for popups */
+.adm-popup-body,
+.adm-center-popup-body {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Optimized chat messages animation */
+.animate-received > .adm-list-body {
+  animation: messageSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+@keyframes messageSlideIn {
+  0% {
+    transform: translateY(-40px) translateZ(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px) translateZ(0);
+    opacity: 1;
+  }
+}
+
+/* Improved button active states */
+.adm-button:active {
+  transform: scale(0.97) translateZ(0);
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* MyEcoria theme gradient accents */
+body.myecoria-theme .adm-capsule-tabs-tab-active {
+  background: linear-gradient(135deg, var(--myecoria-gradient-start), var(--myecoria-gradient-end));
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Smooth loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--adm-color-background) 0%,
+    var(--adm-color-border) 50%,
+    var(--adm-color-background) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Enhanced bottom navigation */
+.bottom-nav {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modern shadow utilities */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.shadow-md { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.shadow-lg { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+.shadow-xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+/* Performance: Reduce paint on scroll */
+.adm-list-item,
+.chat-message,
+.message {
+  will-change: transform;
+  contain: layout style paint;
 }

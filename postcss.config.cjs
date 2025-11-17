@@ -1,7 +1,33 @@
 module.exports = {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {},
-    ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
+    autoprefixer: {
+      flexbox: 'no-2009',
+      grid: 'autoplace',
+    },
+    ...(process.env.NODE_ENV === 'production' ? {
+      cssnano: {
+        preset: ['advanced', {
+          discardComments: {
+            removeAll: true,
+          },
+          reduceIdents: true,
+          zindex: false,
+          mergeRules: true,
+          mergeLonghand: true,
+          cssDeclarationSorter: {
+            order: 'smacss',
+          },
+          normalizeWhitespace: true,
+          colormin: true,
+          minifyFontValues: true,
+          minifyGradients: true,
+          minifySelectors: true,
+          calc: {
+            precision: 3,
+          },
+        }]
+      }
+    } : {})
   },
 };
