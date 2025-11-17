@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+@import './optimizations.css';
+
 html,
 body {
   /* background-color: #000; */
