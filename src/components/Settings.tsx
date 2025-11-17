@@ -516,7 +516,17 @@ className="mb-24"
                           Banano
                         </CheckList.Item>
 
-                      
+                        <CheckList.Item
+                          value="myecoria"
+                          onClick={() => {
+                            document.body.classList = "myecoria-theme";
+                            document.documentElement.setAttribute("data-prefers-color-scheme", "dark");
+                          }}
+                        >
+                          MyEcoria
+                        </CheckList.Item>
+
+
                       </CheckList>
                     </div>
                   ),
